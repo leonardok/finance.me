@@ -1,0 +1,32 @@
+<h1>Editar Despesa Planejada</h1>
+<div class="span-24 ">
+	<% form_for @outcome_planning do |f| %>
+		<%= f.error_messages %>
+		
+		<div class="span-4 "><%= f.label :description, "Descrição" %></div>
+		<div class="span-20 last"><%= f.text_field :description %></div>
+		<div class="span-4"></div>
+		<div class="span-20 last">				
+			<%= collection_select ("", "category_id" , Category.find(:all, :order => "categories.label"), "id", "label", {:prompt => "Selecione"},
+									{:onchange => remote_function(:url => {:controller => "outcome_plannings", :action => "update_subcategories"},
+													                       :with => 'Form.Element.serialize(this)')}) %>
+		</div>
+		<div class="span-4"></div>
+		<div class="span-20 last" id="subcategory">
+			<!-- This is where subcategory select is placed -->
+		</div>
+				
+		<div class="span-4"><%= f.label :value, "Valor" -%></div>
+		<div class="span-20 last"><%= f.text_field :value -%></div>
+
+		<div class="span-4"><%= f.label :plan_for_date, "Para o Mes" %><br>
+			<spam class="small quiet">Formato AAAA-MM<spam>
+		</div>
+		<div class="span-20 last"><%= f.text_field :plan_for_date %></div>
+		
+		<div class="span-24 last">
+				
+		<div class="span-24 last"><%= f.submit 'Salvar' %></div>
+	<% end %>
+
+</div>

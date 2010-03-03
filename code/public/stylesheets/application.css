@@ -1,0 +1,13 @@
+.main-grid {
+	padding: 1px;
+}
+
+.main-grid th {
+	background: #6f92c2;
+	padding: 2px 8px;
+}
+
+td {
+	border: solid #bbb 1px;
+	padding: 0px 8px;
+}

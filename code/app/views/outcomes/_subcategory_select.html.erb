@@ -1,0 +1,1 @@
+<%= collection_select ("outcome", "subcategory_id" , Subcategory.find(:all, :order => "label", :conditions => "category_id = #{@category_id}"), "id", "label", {:prompt => "Selecione"}) %>

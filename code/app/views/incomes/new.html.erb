@@ -1,0 +1,19 @@
+<h1>Nova Receita</h1>
+
+<div class="span-24 ">
+	<% form_for @income do |f| %>
+		<%= f.error_messages %>
+		
+		<div class="span-4 "><%= f.label :description, "Descrição" %></div>
+		<div class="span-20 last"><%= f.text_field :description %></div>
+		
+		<div class="span-4"><%= f.label :value, "Valor" -%></div>
+		<div class="span-20 last"><%= f.text_field :value -%></div>
+
+		<div class="span-4"><%= f.label :date, "Data" -%></div>
+		<div class="span-20 last"><%= f.text_field :date -%></div>
+		
+		<div class="span-24 last"><%= f.submit 'Salvar' %></div>
+	<% end %>
+
+</div>

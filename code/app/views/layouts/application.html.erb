@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>Outcomes: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag  'screen', 'style' %>
+  <%= javascript_include_tag 'prototype' %>
+</head>
+<body>
+	<div class="container">
+		<p style="color: green"><%= flash[:notice] %></p>
+		<%= link_to "Detalhe do Mes", :controller => :montly_details %> |
+		<%= link_to 'Adicionar Despesa', :controller => :outcomes, :action => :new -%> |
+		<%= link_to 'Adicionar Receita', :controller => :incomes, :action => :new -%> |
+		<%= link_to 'Adicionar Empresa', :controller => :companies, :action => :new -%> |
+		<%= link_to 'Listar Despesas Planejadas', :controller => :outcome_plannings, :action => :index -%> |
+		<%= link_to 'Adicionar Despesa Planejada', :controller => :outcome_plannings, :action => :new -%>
+		<%= yield %>
+	</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+module MontlyDetailsHelper
+end

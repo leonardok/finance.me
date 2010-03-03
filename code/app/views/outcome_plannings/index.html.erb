@@ -1,0 +1,42 @@
+<h1>Plano de Gastos</h1>
+<spam class="quiet">Para o mes 02</spam>
+<h3>Visão Geral</h3>
+<table class="main-grid">
+	<tr>
+		<th>Categoria</th>
+		<th>Valor</th>
+	</tr>
+
+<% @outcome_plan_all.each do |outcome_planning| %>
+	<tr>
+		<td><%= outcome_planning.category_label %></td>
+		<td><%= outcome_planning.value %></td>
+	</tr>
+<% end %>
+</table>
+
+<h3>Todas Gastos Planejados</h3>
+
+<table class="main-grid">
+	<tr>
+		<th>Descrição</th>
+		<th>Categoria / Subcategoria</th>
+		<th>Valor</th>
+		<th>Empresa</th>
+		<th></th>
+	</tr>
+
+<% @outcome_plannings.each do |outcome_planning| %>
+  <tr>
+	<td><%= outcome_planning.description %></td>
+	<td><%= outcome_planning.subcategory.category.label %> / <%= outcome_planning.subcategory.label %></td>
+	<td><%= outcome_planning.value %></td>
+	<td><%= outcome_planning.plan_for_date %></td>
+    <td><%= link_to 'Edit', edit_outcome_planning_path(outcome_planning) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New outcome_planning', new_outcome_planning_path %>

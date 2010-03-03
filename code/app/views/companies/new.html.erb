@@ -1,0 +1,13 @@
+<h1>Nova Empresa</h1>
+
+<div class="span-24 ">
+	<% form_for @company do |f| %>
+		<%= f.error_messages %>
+		
+		<div class="span-4 "><%= f.label :name, "Nome" %></div>
+		<div class="span-20 last"><%= f.text_field :name %></div>
+		
+		<div class="span-24 last"><%= f.submit 'Salvar' %></div>
+	<% end %>
+
+</div>

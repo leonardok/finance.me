@@ -1,0 +1,39 @@
+<h1>Editing outcome</h1>
+
+<div class="span-24 ">
+	<% form_for @outcome do |f| %>
+		<%= f.error_messages %>
+		
+		<div class="span-4 "><%= f.label :description, "Descrição" %></div>
+		<div class="span-20 last"><%= f.text_field :description %></div>
+		<div class="span-4"></div>
+		<div class="span-20 last">				
+			<%= collection_select ("", "category_id" , Category.all, "id", "label", {:prompt => "Selecione"},
+									{:onchange => remote_function(:url => {:controller => "outcomes", :action => "update_subcategories"},
+													                       :with => 'Form.Element.serialize(this)')}) %>
+		</div>
+		<div class="span-4"></div>
+		<div class="span-20 last" id="subcategory">
+			<!-- This is where subcategory select is placed -->
+		</div>
+		
+		<div class="span-24">
+			<div class="span-4"><%= f.label :description, "Empresa" %></div>
+			<div class="span-20 last">				
+				<%= collection_select ("outcome", "company_id" , Company.all, "id", "name", {:prompt => "Selecione"}) %>
+			</div>
+		</div>
+		
+		<div class="span-4"><%= f.label :value, "Valor" -%></div>
+		<div class="span-20 last"><%= f.text_field :value -%></div>
+
+		<div class="span-4"><%= f.label :data_vencimento, "Data de Vencimento" %></div>
+		<div class="span-20 last"><%= f.text_field :data_vencimento %></div>
+		
+		<div class="span-4"><%= f.label :data_pagamento, "Pago na data" %></div>
+		<div class="span-20 last"><%= f.text_field :data_pagamento %></div>
+		
+		<div class="span-24 last"><%= f.submit 'Salvar' %></div>
+	<% end %>
+
+</div>
