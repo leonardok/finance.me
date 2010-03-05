@@ -1,0 +1,27 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+pt:
+  hello: "Olá mundo!"
+  
+  # menu
+  montly_details: "Detalhes Mensais"
+  incomes: "Receita"
+  outcomes: "Despesa"
+  categories: "Categorias"
+  companies: "Empresas"
+  
+  # submenu
+  another_month: "Detalhes do Mes"
+  list_incomes: "Listar Receitas"
+  add_incomes: "Adicionar Receita"
+  list_outcomes: "Listar Despesas"
+  add_outcomes: "Adicionar Despesa"
+  list_planned_outcomes: "Listar Despesas Planejadas"
+  add_planned_outcomes: "Adicionar Despesas Planejadas"
+  list_categories: "Listar Categorias"
+  add_categories: "Adicionar Categoria" 
+  list_subcategories: "Listar Subcategorias"
+  add_subcategories: "Adicionar Subcategorias"
+  list_companies: "Listar Empresas"
+  add_companies: "Adicionar Empresa"

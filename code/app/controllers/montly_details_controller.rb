@@ -18,8 +18,8 @@ class MontlyDetailsController < ApplicationController
   # GET /montly_details
   # GET /montly_details.xml
   def index
-	date_now = Time.now.strftime('%Y%m')
-	printf "%s", date_now
+        date_now = Time.now.strftime('%Y%m')
+
     @outcomes = Outcome.find :all, :joins => [:subcategory, :company], :order => "data_vencimento", 
 		:conditions => "strftime('%Y%m', outcomes.data_vencimento) = strftime('%Y%m', 'now') or 
 		               (outcomes.data_pagamento is null and strftime('%Y%m', outcomes.data_vencimento) <= strftime('%Y%m', 'now'))

@@ -5,19 +5,21 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title>Outcomes: <%= controller.action_name %></title>
-  <%= stylesheet_link_tag  'screen', 'style' %>
-  <%= javascript_include_tag 'prototype' %>
+  <%= stylesheet_link_tag  'screen', 'style', 'menu' %>
 </head>
 <body>
 	<div class="container">
+		<div id="topbar" class='span-24 last'>
+			<%= menu_writer %>
+		</div>
+		<div id="submenu" class='span-24 last'>
+			<%= submenu_writer %>
+		</div>
+		
+		<div class="span-24 last">&nbsp;</div>
 		<p style="color: green"><%= flash[:notice] %></p>
-		<%= link_to "Detalhe do Mes", :controller => :montly_details %> |
-		<%= link_to 'Adicionar Despesa', :controller => :outcomes, :action => :new -%> |
-		<%= link_to 'Adicionar Receita', :controller => :incomes, :action => :new -%> |
-		<%= link_to 'Adicionar Empresa', :controller => :companies, :action => :new -%> |
-		<%= link_to 'Listar Despesas Planejadas', :controller => :outcome_plannings, :action => :index -%> |
-		<%= link_to 'Adicionar Despesa Planejada', :controller => :outcome_plannings, :action => :new -%>
 		<%= yield %>
 	</div>
 </body>
 </html>
+<%= javascript_include_tag 'prototype' %>

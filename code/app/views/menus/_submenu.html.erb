@@ -1,0 +1,4 @@
+			<% submenus.each do |submenu| %>
+			<%= link_to "<span>"+t(submenu.label)+"</span>", 
+				:controller => submenu.controller, :action => submenu.action %>
+			<% end %>

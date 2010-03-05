@@ -1,4 +1,4 @@
- -----------------------------------------------------------------------
+ /* -----------------------------------------------------------------------
 
    BlueTrip CSS Framework
    
@@ -72,7 +72,7 @@ th, td { border-bottom: 1px solid #ddd; border-right: 1px solid #ccc; }
 
 /* MARGINS & PADDINGS */
 
-blockquote *:first-child { margin: .8em 0; }
+blockquote *:first-child { margin: 0; }
 hr, p, ul, ol, dl, pre, blockquote, address, table, form { margin-bottom: 1.6em; }
 /* NOTE: Calulate header margins: TOP: 1.6em/size, BOTTOM: 1.6em/size/2 */
 h1 { margin: 1em 0 .5em;  }

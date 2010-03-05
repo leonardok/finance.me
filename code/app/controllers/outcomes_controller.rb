@@ -32,7 +32,7 @@ class OutcomesController < ApplicationController
     @to_model = "outcome"
     
     render :update do |page|
-      page.replace_html "subcategory", :partial => 'subcategory_select', 
+      page.replace_html "submenu", :partial => 'subcategory_select', 
         :locals => { :category_id => @category_id, :to_model => @to_model }
         
     end

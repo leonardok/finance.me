@@ -1,0 +1,12 @@
+<h1>Editing submenu</h1>
+
+<% form_for(@submenu) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @submenu %> |
+<%= link_to 'Back', submenus_path %>

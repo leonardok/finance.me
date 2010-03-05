@@ -1,0 +1,10 @@
+<% Menu.all.each do |menu_entry| %>
+	<% if submenu.menu_id.to_i == menu_entry.id.to_i %>
+		<%= link_to_remote "<span>"+t(menu_entry.label)+"</span>", 
+			:url => { :controller => 'menus', :action => 'update_submenu', :menu_id => menu_entry.id },
+			:html => { :class => 'active' } %>
+	<% else %>
+		<%= link_to_remote t(menu_entry.label), 
+			:url => { :controller => 'menus', :action => 'update_submenu', :menu_id => menu_entry.id } %>
+	<% end %>
+<% end %>

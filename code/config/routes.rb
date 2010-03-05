@@ -15,6 +15,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ActionController::Routing::Routes.draw do |map|
+  map.resources :submenus
+
+  map.resources :menus
+
   map.resources :outcome_plannings
 
   map.resources :companies
