@@ -1,5 +1,5 @@
 # finances.me is a personal finance manager
-# Copyright (C) 2010 Leonardo Korndörfer
+# Copyright (C) 2010 Leonardo KorndÃ¶rfer
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
