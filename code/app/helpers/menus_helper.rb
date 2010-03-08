@@ -15,15 +15,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module MenusHelper
-    def menu_writer
-	    submenu = Submenu.find(:first, :conditions => { :controller => controller_name, :action => action_name })
-    	render :partial => '/menus/menu', :locals => { :submenu => submenu }
-    end
+  def menu_writer
+    submenu = Submenu.find(:first, :conditions => { :controller => controller_name })
+  	render :partial => '/menus/menu', :locals => { :submenu => submenu }
+  end
 
-    def submenu_writer
-    	submenu = Submenu.find(:first, :conditions => { :controller => controller_name })
-    	submenus = Submenu.find(:all, :conditions => { :menu_id => submenu.menu_id })
-    	
-    	render :partial => '/menus/submenu', :locals => { :submenus => submenus }
-    end
+  def submenu_writer
+  	submenu = Submenu.find(:first, :conditions => { :controller => controller_name })
+  	submenus = Submenu.find(:all, :conditions => { :menu_id => submenu.menu_id })
+  	
+  	render :partial => '/menus/submenu', :locals => { :submenus => submenus }
+  end
 end
