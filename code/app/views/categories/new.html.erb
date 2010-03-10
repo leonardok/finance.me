@@ -1,10 +1,11 @@
-<h1>New category</h1>
+<h1>Nova Categoria</h1>
 
 <% form_for(@category) do |f| %>
-  <%= f.error_messages %>
-
+	<%= f.error_messages %>
+	<div class="span-4 "><%= f.label :label, "Nome da Categoria" %></div>
+	<div class="span-20 last"><%= f.text_field :label %></div>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit 'Salvar' %>
   </p>
 <% end %>
 

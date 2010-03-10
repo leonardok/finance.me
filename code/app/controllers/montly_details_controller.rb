@@ -18,14 +18,15 @@ class MontlyDetailsController < ApplicationController
   # GET /montly_details
   # GET /montly_details.xml
   def index
-        date_now = Time.now.strftime('%Y%m')
-
+    ano = (params[:ano] != nil ? params[:ano] : Time.now.strftime('%Y'))    
+    mes = (params[:mes] != nil ? params[:mes] : Time.now.strftime('%m'))    
+    
     @outcomes = Outcome.find :all, :joins => [:subcategory, :company], :order => "data_vencimento", 
-		:conditions => "strftime('%Y%m', outcomes.data_vencimento) = strftime('%Y%m', 'now') or 
-		               (outcomes.data_pagamento is null and strftime('%Y%m', outcomes.data_vencimento) <= strftime('%Y%m', 'now'))
-		               or (strftime('%Y%m',outcomes.data_pagamento) = strftime('%Y%m', 'now'))"
+		:conditions => "strftime('%Y%m', outcomes.data_vencimento) = '#{ano+mes}' or 
+		               (outcomes.data_pagamento is null and strftime('%Y%m', outcomes.data_vencimento) <= '#{ano+mes}')
+		               or (strftime('%Y%m',outcomes.data_pagamento) = '#{ano+mes}')"
 
-    @incomes = Income.find(:all)
+    @incomes = Income.find(:all, :conditions => "strftime('%Y%m',date) = '#{ano+mes}'")
     @totals  = Income.find_by_sql "
 			SELECT year_month_incomes AS year_month,
              income_total,
@@ -34,16 +35,16 @@ class MontlyDetailsController < ApplicationController
       FROM   (SELECT Sum(VALUE)                    AS income_total,
                      Strftime('%Y%m',incomes.DATE) AS year_month_incomes
               FROM   incomes
-              WHERE  Strftime('%Y%m',incomes.DATE) = Strftime('%Y%m','now'))
+              WHERE  Strftime('%Y%m',incomes.DATE) = '#{ano+mes}')
              LEFT JOIN (SELECT Sum(VALUE)                               AS outcome_total,
                                Strftime('%Y%m',outcomes.data_pagamento) AS year_month_outcomes
                         FROM   outcomes
-                        WHERE  Strftime('%Y%m',outcomes.data_pagamento) = Strftime('%Y%m','now'))
+                        WHERE  Strftime('%Y%m',outcomes.data_pagamento) = '#{ano+mes}')
                ON year_month_outcomes = year_month_incomes
              LEFT JOIN (SELECT Sum(VALUE)                                       AS outcome_plannings_total,
                                Strftime('%Y%m',outcome_plannings.plan_for_date) AS year_month_outcome_plannings
                         FROM   outcome_plannings
-                        WHERE  Strftime('%Y%m',outcome_plannings.plan_for_date) = Strftime('%Y%m','now'))
+                        WHERE  Strftime('%Y%m',outcome_plannings.plan_for_date) = '#{ano+mes}')
                ON year_month_outcome_plannings = year_month_incomes "
     
     @category_outcomes = Outcome.find_by_sql "
@@ -58,7 +59,7 @@ class MontlyDetailsController < ApplicationController
 										 ON outcomes.subcategory_id = subcategories.id
 									   LEFT JOIN categories
 										 ON subcategories.category_id = categories.id
-							  WHERE    Strftime('%Y%m',outcomes.data_pagamento) = Strftime('%Y%m','now')
+							  WHERE    Strftime('%Y%m',outcomes.data_pagamento) = '#{ano+mes}'
 							  GROUP BY categories.id)
 					 ON outcome_categories = categories.id
 				   LEFT JOIN (SELECT   Sum(outcome_plannings.VALUE) AS outcome_plannings_value,
@@ -68,13 +69,24 @@ class MontlyDetailsController < ApplicationController
 										 ON outcome_plannings.subcategory_id = subcategories.id
 									   LEFT JOIN categories
 										 ON subcategories.category_id = categories.id
-							  WHERE    Strftime('%Y%m',outcome_plannings.plan_for_date) = Strftime('%Y%m','now')
+							  WHERE    Strftime('%Y%m',outcome_plannings.plan_for_date) = '#{ano+mes}'
 							  GROUP BY categories.id)
 					 ON outcome_plannings_categories = categories.id
 			WHERE  outcomes_value IS NOT NULL
 					OR outcome_plannings_value IS NOT NULL "
                     
     @date_today = Time.now.strftime('%Y%m%d').to_i
+  end
+
+
+  def change_month
+    @datas = Outcome.find_by_sql("SELECT STRFTIME('%Y',data_vencimento) as ano, STRFTIME('%m',data_vencimento) as mes
+    FROM outcomes
+    group by mes, ano
+    UNION
+    SELECT STRFTIME('%Y',plan_for_date) as ano, STRFTIME('%m',plan_for_date) as mes
+    FROM outcome_plannings
+    group by mes, ano")
   end
 
   # GET /montly_details/1

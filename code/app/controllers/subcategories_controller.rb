@@ -18,13 +18,14 @@ class SubcategoriesController < ApplicationController
   # GET /subcategories
   # GET /subcategories.xml
   def index
-    @subcategories = Subcategory.all
+    @subcategories = Subcategory.all(:joins => :category,:order => "categories.label, label")
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @subcategories }
     end
   end
+  
 
   # GET /subcategories/1
   # GET /subcategories/1.xml

@@ -6,8 +6,7 @@
 
 <% @subcategories.each do |subcategory| %>
   <tr>
-    <td><%= link_to 'Show', subcategory %></td>
-    <td><%= link_to 'Edit', edit_subcategory_path(subcategory) %></td>
+	<td><%= subcategory.category.label %> / <%= subcategory.label %></td>
     <td><%= link_to 'Destroy', subcategory, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

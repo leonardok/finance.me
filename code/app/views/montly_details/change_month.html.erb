@@ -1,0 +1,5 @@
+<h1>Selecione o Mes</h1>
+
+<% @datas.each do |data| %>
+	<%= link_to data.mes+'/'+data.ano, :controller => :montly_details, :action => :index, :mes => data.mes, :ano => data.ano %><br />
+<% end %>
