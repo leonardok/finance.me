@@ -46,7 +46,8 @@
 			<tr>
 				<td><%= income.description %></td>
 				<td><%= income.value %></td>
-				<td><%= link_to 'Editar' %></td>
+				<td><%= link_to 'Editar' %> -
+					<%= link_to 'Excluir', income, :confirm => 'Voce tem certeza?', :method => :delete %></td>
 			</tr>
 			<% end %>
 		</table>

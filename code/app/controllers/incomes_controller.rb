@@ -95,7 +95,7 @@ class IncomesController < ApplicationController
     @income.destroy
 
     respond_to do |format|
-      format.html { redirect_to(incomes_url) }
+      format.html { redirect_to :controller => :montly_details }
       format.xml  { head :ok }
     end
   end
