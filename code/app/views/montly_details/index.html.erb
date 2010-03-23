@@ -90,7 +90,8 @@
 		<td><%= outcome.company.name %></td>
 		<td><%= outcome.subcategory.category.label %> / <%= outcome.subcategory.label %></td>
 		<td><%= outcome.value %></td>
-		<td><%= link_to 'Editar', :controller => :outcomes, :action => :edit, :id => outcome.id %></td>
+		<td><%= link_to 'Editar', :controller => :outcomes, :action => :edit, :id => outcome.id %> -
+		<%= link_to 'Excluir', outcome, :confirm => 'Voce tem certeza?', :method => :delete %></td>
 	</tr>
 	<% end %>
 	<tr>

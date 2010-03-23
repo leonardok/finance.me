@@ -106,7 +106,7 @@ class OutcomesController < ApplicationController
     @outcome.destroy
 
     respond_to do |format|
-      format.html { redirect_to(outcomes_url) }
+      format.html { redirect_to :controller => :montly_details }
       format.xml  { head :ok }
     end
   end
