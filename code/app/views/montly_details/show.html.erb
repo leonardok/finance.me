@@ -1,3 +1,108 @@
+<h1>Resumo do Mes</h1>
+<table class="main-grid">
+	<tr>
+		<th>Total Ganha</th>
+		<th>Total Gasta</th>
+		<th>Total Planejada</th>
+		<th>Saldo</th>
+	</tr>
+	<% @totals.each do |total| %>
+	<tr>
+		<td><%= total.income_total %></td>
+		<td><%= total.outcome_total %></td>
+		<td><%= total.outcome_plannings_total %></td>
+		<td><%= total.income_total.to_i - total.outcome_total.to_i %></td>
+</tr>
+	<% end %>
+</table>
 
-<%= link_to 'Edit', edit_montly_detail_path(@montly_detail) %> |
-<%= link_to 'Back', montly_details_path %>
+<div class="span-24">
+	<div class="span-10">
+		<h4>Gastos por categoria</h4>
+		<table class="main-grid">
+			<tr>
+				<th>Categoria</th>
+				<th>Valor Gasto</th>
+				<th>Valor Planejado</th>
+			</tr>
+			<% @category_outcomes.each do |spent_by_category| %>
+			<tr>
+				<td><%= spent_by_category.label %></td>
+				<td><%= spent_by_category.outcomes_value %></td>
+				<td><%= spent_by_category.outcome_plannings_value %></td>
+			</tr>
+			<% end %>
+		</table>		
+	</div>
+	<div class="span-12 last">
+		<h4>Receita</h4>
+		<table class="main-grid">
+			<tr>
+				<th>Rendimento Desc.</th>
+				<th>Valor</th>
+				<th></th>
+			</tr>
+			<% @incomes.each do |income| %>
+			<tr>
+				<td><%= income.description %></td>
+				<td><%= income.value %></td>
+				<td><%= link_to image_tag('/images/icons/edit_pencil.png') %> 
+					<%= link_to image_tag('/images/icons/trash.png'), income, :confirm => 'Voce tem certeza?', :method => :delete %></td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+
+<hr />
+
+<h1>Gastos</h1>
+
+<table class="main-grid">
+	<tr>
+		<th>Descrição</th>
+		<th>Valor</th>
+		<th></th>
+		<th></th>
+	</tr>
+	<% total_value = 0 %>
+	<% @outcomes.each do |outcome| %>
+	<% if outcome.data_vencimento != nil %>
+		<% vencimento_i = outcome.data_vencimento.strftime('%Y%m%d').to_i %>
+		<% if (vencimento_i < @date_today and outcome.data_pagamento.nil?)
+				tr_class = 'outcome-red-flag'
+			elsif ((vencimento_i-10) < @date_today and outcome.data_pagamento.nil?)
+					tr_class = 'outcome-yellow-flag'
+			else
+				tr_class = ''
+			end 
+		%>
+	<% end %>
+	
+	<% total_value += outcome.value %>
+	
+	<tr class="<%= tr_class %>">
+		<td><%= link_to outcome.description, :controller => "outcomes", :action => "show", :id => outcome.id %></td>
+		<td><%= outcome.value %></td>
+		<td><%= (outcome.data_pagamento) ? "<span class='quiet'>Pago</span>" : link_to("Pagar", :class => "red") %></td>
+		<td><%= link_to image_tag('/images/icons/edit_pencil.png'), :controller => :outcomes, :action => :edit, :id => outcome.id %> 
+		<%= link_to image_tag('/images/icons/trash.png'), outcome, :confirm => 'Voce tem certeza?', :method => :delete %></td>
+	</tr>
+	<% end %>
+	<tr>
+		<td><spam class="bold">Valor total de gastos pagos ou a serem pagos</spam></td>
+		<td><spam class="bold text-red"><%= total_value %></spam></td>
+	</tr>
+</table>
+
+<h3>Legenda</h3>
+<table class="main-grid">
+	<tr>
+		<td>Vence em 5 dias ou menos</td>
+		<td class="outcome-yellow-flag">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Vencidas</td>
+		<td class="outcome-red-flag">&nbsp;</td>
+	</tr>
+</table>

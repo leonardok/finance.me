@@ -3,3 +3,7 @@
 <% @datas.each do |data| %>
 	<%= link_to data.mes+'/'+data.ano, :controller => :montly_details, :action => :index, :mes => data.mes, :ano => data.ano %><br />
 <% end %>
+
+<%= form_tag '/monthly_details' do |f| %>
+	<%= f.submit %>
+<% end %>

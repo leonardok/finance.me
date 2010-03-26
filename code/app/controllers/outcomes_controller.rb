@@ -41,7 +41,7 @@ class OutcomesController < ApplicationController
   # GET /outcomes/1
   # GET /outcomes/1.xml
   def show
-    @outcome = Outcome.find(params[:id])
+    @outcome = Outcome.find(params[:id], :joins => [:subcategory, :company])
 
     respond_to do |format|
       format.html # show.html.erb

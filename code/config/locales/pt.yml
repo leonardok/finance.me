@@ -12,7 +12,7 @@ pt:
   companies: "Empresas"
   
   # submenu
-  another_month: "Detalhes do Mes"
+  show_month: "Detalhes do Mes"
   list_incomes: "Listar Receitas"
   add_incomes: "Adicionar Receita"
   list_outcomes: "Listar Despesas"

@@ -18,15 +18,56 @@ class MontlyDetailsController < ApplicationController
   # GET /montly_details
   # GET /montly_details.xml
   def index
-    ano = (params[:ano] != nil ? params[:ano] : Time.now.strftime('%Y'))    
-    mes = (params[:mes] != nil ? params[:mes] : Time.now.strftime('%m'))    
+    @year = Outcome.find_by_sql("SELECT STRFTIME('%Y',data_vencimento) as year
+      FROM outcomes
+      group by year
+      UNION
+      SELECT STRFTIME('%Y',plan_for_date) as year
+      FROM outcome_plannings
+      group by year")
+      
+    @month = Outcome.find_by_sql("SELECT STRFTIME('%m',data_vencimento) as month
+      FROM outcomes
+      group by month
+      UNION
+      SELECT STRFTIME('%m',plan_for_date) as month
+      FROM outcome_plannings
+      group by month")
+      
+    
+  end
+
+
+  # GET /montly_details/1
+  # GET /montly_details/1.xml
+  def show    
+    logger.debug "Imprimindo ano: #{params[:year]}"
+    logger.debug "Imprimindo mes: #{params[:month]}"
+    
+    logger.debug "Imprimindo ano cookie: #{cookies[:year]}"
+    logger.debug "Imprimindo mes cookie: #{cookies[:month]}"
+    
+    
+    if (params[:year] == nil and cookies[:year] == nil)
+      cookies[:year] = Time.now.strftime('%Y')
+    end
+    
+    if (params[:month] == nil and cookies[:month] == nil)
+      cookies[:month] = Time.now.strftime('%m')
+    end
+    
+    year  = (params[:year] != nil)  ? params[:year] : cookies[:year]
+    month = (params[:month] != nil) ? params[:month] : cookies[:month]
+    
+    cookies[:year]  = year
+    cookies[:month] = month
     
     @outcomes = Outcome.find :all, :joins => [:subcategory, :company], :order => "data_vencimento", 
-		:conditions => "strftime('%Y%m', outcomes.data_vencimento) = '#{ano+mes}' or 
-		               (outcomes.data_pagamento is null and strftime('%Y%m', outcomes.data_vencimento) <= '#{ano+mes}')
-		               or (strftime('%Y%m',outcomes.data_pagamento) = '#{ano+mes}')"
+		:conditions => "strftime('%Y%m', outcomes.data_vencimento) = '#{year+month}' or 
+		               (outcomes.data_pagamento is null and strftime('%Y%m', outcomes.data_vencimento) <= '#{year+month}')
+		               or (strftime('%Y%m',outcomes.data_pagamento) = '#{year+month}')"
 
-    @incomes = Income.find(:all, :conditions => "strftime('%Y%m',date) = '#{ano+mes}'")
+    @incomes = Income.find(:all, :conditions => "strftime('%Y%m',date) = '#{year+month}'")
     @totals  = Income.find_by_sql "
 			SELECT year_month_incomes AS year_month,
              income_total,
@@ -35,16 +76,16 @@ class MontlyDetailsController < ApplicationController
       FROM   (SELECT Sum(VALUE)                    AS income_total,
                      Strftime('%Y%m',incomes.DATE) AS year_month_incomes
               FROM   incomes
-              WHERE  Strftime('%Y%m',incomes.DATE) = '#{ano+mes}')
+              WHERE  Strftime('%Y%m',incomes.DATE) = '#{year+month}')
              LEFT JOIN (SELECT Sum(VALUE)                               AS outcome_total,
                                Strftime('%Y%m',outcomes.data_pagamento) AS year_month_outcomes
                         FROM   outcomes
-                        WHERE  Strftime('%Y%m',outcomes.data_pagamento) = '#{ano+mes}')
+                        WHERE  Strftime('%Y%m',outcomes.data_pagamento) = '#{year+month}')
                ON year_month_outcomes = year_month_incomes
              LEFT JOIN (SELECT Sum(VALUE)                                       AS outcome_plannings_total,
                                Strftime('%Y%m',outcome_plannings.plan_for_date) AS year_month_outcome_plannings
                         FROM   outcome_plannings
-                        WHERE  Strftime('%Y%m',outcome_plannings.plan_for_date) = '#{ano+mes}')
+                        WHERE  Strftime('%Y%m',outcome_plannings.plan_for_date) = '#{year+month}')
                ON year_month_outcome_plannings = year_month_incomes "
     
     @category_outcomes = Outcome.find_by_sql "
@@ -59,7 +100,7 @@ class MontlyDetailsController < ApplicationController
 										 ON outcomes.subcategory_id = subcategories.id
 									   LEFT JOIN categories
 										 ON subcategories.category_id = categories.id
-							  WHERE    Strftime('%Y%m',outcomes.data_pagamento) = '#{ano+mes}'
+							  WHERE    Strftime('%Y%m',outcomes.data_pagamento) = '#{year+month}'
 							  GROUP BY categories.id)
 					 ON outcome_categories = categories.id
 				   LEFT JOIN (SELECT   Sum(outcome_plannings.VALUE) AS outcome_plannings_value,
@@ -69,29 +110,14 @@ class MontlyDetailsController < ApplicationController
 										 ON outcome_plannings.subcategory_id = subcategories.id
 									   LEFT JOIN categories
 										 ON subcategories.category_id = categories.id
-							  WHERE    Strftime('%Y%m',outcome_plannings.plan_for_date) = '#{ano+mes}'
+							  WHERE    Strftime('%Y%m',outcome_plannings.plan_for_date) = '#{year+month}'
 							  GROUP BY categories.id)
 					 ON outcome_plannings_categories = categories.id
 			WHERE  outcomes_value IS NOT NULL
 					OR outcome_plannings_value IS NOT NULL "
                     
     @date_today = Time.now.strftime('%Y%m%d').to_i
-  end
-
-
-  def change_month
-    @datas = Outcome.find_by_sql("SELECT STRFTIME('%Y',data_vencimento) as ano, STRFTIME('%m',data_vencimento) as mes
-    FROM outcomes
-    group by mes, ano
-    UNION
-    SELECT STRFTIME('%Y',plan_for_date) as ano, STRFTIME('%m',plan_for_date) as mes
-    FROM outcome_plannings
-    group by mes, ano")
-  end
-
-  # GET /montly_details/1
-  # GET /montly_details/1.xml
-  def show
+    
   end
 
   # GET /montly_details/new
